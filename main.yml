@@ -19,7 +19,7 @@
     register: vero_file
 
   - name: "Ricerco 'excludeResources: SIPSBC' nel file di backup di LDAP"
-    shell: "zcat {{ backup_presente.stdout }} | unldif | grep 'excludeResources: SIPSBC'"
+    shell: "zcat {{ backup_presente.stdout }} | /opt/reitek/ct6/bin/unldif | grep 'excludeResources: SIPSBC'"
     check_mode: false
     changed_when: false
     failed_when: false
