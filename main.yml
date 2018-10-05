@@ -39,7 +39,7 @@
 
     - name: invio della mail
       mail:
-        subject: 'Invio REPORT INFOSYSTEM {{ now.stdout }} '
+        subject: 'Invio REPORT resources_SIPSBC'
         #to: Martino.Vigano@enghouse.com, cloudando@enghouse.com
         to: Martino.Vigano@enghouse.com
         from: ansible@reitek.com
