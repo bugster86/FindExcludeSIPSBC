@@ -37,5 +37,15 @@
       changed_when: false
       when: istanza_trovata.rc != 0
 
-    delegate_to: localhost
+    - name: invio della mail
+      mail:
+        subject: 'Invio REPORT INFOSYSTEM {{ now.stdout }} '
+        #to: Martino.Vigano@enghouse.com, cloudando@enghouse.com
+        to: Martino.Vigano@enghouse.com
+        from: ansible@reitek.com
+        body: "In allegato trovi il file"
+        attach: /tmp/exclude_resources_SIPSBC_mancante_su_SIPRPIN.csv
+      delegate_to: localhost
+      run_once: true
 
+    delegate_to: localhost
