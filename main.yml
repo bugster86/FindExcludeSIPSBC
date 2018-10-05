@@ -1,0 +1,36 @@
+- hosts: "*-cti*:*-ipt*:*-stc*:*-ct*:*-acd*"
+
+  tasks:
+  - block:
+    - file: path=/tmp/exclude_resources_SIPSBC_mancante_su_SIPRPIN.csv state=absent
+    - file: path=/tmp/exclude_resources_SIPSBC_mancante_su_SIPRPIN.csv state=touch
+    run_once: true
+    delegate_to: localhost
+
+  - name: Ricerca l'ultimo file di backup di LDAP
+    shell: ls -1tr /var/ldap/backup/openldap-data*.ldif.gz | tail -1
+    check_mode: false
+    changed_when: false
+    failed_when: false
+    register: backup_presente
+
+  - stat:
+       path: "{{ backup_presente.stdout }}"
+    register: vero_file
+
+  - name: Ricerco 'excludeResources: SIPSBC' nel file di backup di LDAP
+    shell: "zcat {{ backup_presente.stdout }} | unldif | grep {{ backup_presente.stdout }}"
+    check_mode: false
+    changed_when: false
+    failed_when: false
+    when: backup_presente.rc == 0 and vero_file.stat.exists
+    register: istanza_trovata
+
+  - block:
+    - shell: echo "{{ inventory_hostname}},OK" >> /tmp/exclude_resources_SIPSBC_mancante_su_SIPRPIN.csv
+      failed_when: false
+      changed_when:false
+      when: istanza_trovata.rc == 0
+
+
+    delegate_to: localhost:w
