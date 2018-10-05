@@ -27,12 +27,12 @@
     register: istanza_trovata
 
   - block:
-    - shell: echo "{{ inventory_hostname}},OK" >> /tmp/exclude_resources_SIPSBC_mancante_su_SIPRPIN.csv
+    - shell: echo "{{ inventory_hostname}};OK" >> /tmp/exclude_resources_SIPSBC_mancante_su_SIPRPIN.csv
       failed_when: false
       changed_when: false
       when: istanza_trovata.rc == 0
 
-    - shell: echo "{{ inventory_hostname}},KO" >> /tmp/exclude_resources_SIPSBC_mancante_su_SIPRPIN.csv
+    - shell: echo "{{ inventory_hostname}};KO" >> /tmp/exclude_resources_SIPSBC_mancante_su_SIPRPIN.csv
       failed_when: false
       changed_when: false
       when: istanza_trovata.rc != 0
